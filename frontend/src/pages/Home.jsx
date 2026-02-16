@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 import { 
   QrCode, Smartphone, Bell, CheckCircle, 
   Instagram, Mail, MessageCircle, ArrowRight 
@@ -7,6 +8,86 @@ import {
 import styles from './Home.module.scss';
 
 const Home = () => {
+  const [formData, setFormData] = useState({
+    nombre: '',
+    mensaje: ''
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 1. Validaciones
+    if (!formData.nombre.trim() || !formData.mensaje.trim()) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos incompletos',
+        text: 'Por favor, completá todos los campos del formulario.',
+        confirmButtonColor: '#16a34a'
+      });
+      return;
+    }
+
+    // Validación: No puede empezar con números
+    const startsWithNumber = /^\d/;
+    if (startsWithNumber.test(formData.nombre)) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Nombre inválido',
+        text: 'El nombre del local no puede comenzar con un número.',
+        confirmButtonColor: '#16a34a'
+      });
+      return;
+    }
+
+    // 2. Confirmación antes de enviar
+    Swal.fire({
+      title: '¿Enviar mensaje?',
+      text: "Se abrirá WhatsApp para enviar tu consulta.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#16a34a',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Sí, enviar!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const telefono = "5491151460922"; 
+        const texto = `Hola! Soy *${formData.nombre}* y me gustaría recibir información. %0A%0A*Consulta:* ${formData.mensaje}`;
+        const url = `https://wa.me/${telefono}?text=${texto}`;
+        window.open(url, '_blank');
+
+        // Limpiar el formulario después de enviar
+        setFormData({ nombre: '', mensaje: '' });
+        
+        Swal.fire({
+          title: '¡Redirigiendo!',
+          text: 'Tu mensaje está listo en WhatsApp.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
+  };
+
+    const handleEmailClick = (e) => {
+    e.preventDefault();
+    const email = "nottypers@gmail.com";
+
+    // Copia directa al portapapeles
+    navigator.clipboard.writeText(email);
+
+    // Alerta de confirmación
+    Swal.fire({
+        title: '¡Email copiado!',
+        text: `${email} se ha guardado en tu portapapeles.`,
+        icon: 'success',
+        confirmButtonColor: '#16a34a',
+        timer: 2500,
+        timerProgressBar: true,
+    });
+    };
+
   return (
     <div className={styles.mainWrapper}>
       {/* Navbar */}
@@ -23,19 +104,17 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* HERO - Con los celulares laterales como la imagen */}
+      {/* HERO */}
       <header id="inicio" className={styles.hero}>
-        {/* Capas de brillo y color intensas */}
         <div className={styles.heroGlow}></div>
         <div className={styles.heroSpotlight}></div>
         
-        {/* Celulares decorativos envolventes */}
         <div className={styles.sidePhones}>
             <div className={styles.phoneWrapperLeft}>
-            <Smartphone className={styles.phoneLeft} size={400} strokeWidth={0.5} />
+              <Smartphone className={styles.phoneLeft} size={400} strokeWidth={0.5} />
             </div>
             <div className={styles.phoneWrapperRight}>
-            <Smartphone className={styles.phoneRight} size={400} strokeWidth={0.5} />
+              <Smartphone className={styles.phoneRight} size={400} strokeWidth={0.5} />
             </div>
         </div>
 
@@ -118,9 +197,7 @@ const Home = () => {
 
       {/* FUNCIONAMIENTO */}
       <section id="funcionamiento" className={styles.funcSection}>
-        {/* Patrón de puntos para el fondo */}
         <div className={styles.gridPattern}></div>
-        
         <div className={styles.container}>
             <span className={styles.sectionLabelCenter}>Proceso</span>
             <h2 className={styles.centerTitle}>Cómo funciona</h2>
@@ -152,12 +229,11 @@ const Home = () => {
       </section>
 
       {/* BENEFICIOS */}
-        <section id="beneficios" className={styles.beneficiosSection}>
+      <section id="beneficios" className={styles.beneficiosSection}>
         <div className={styles.container}>
             <span className={styles.sectionLabelCenter}>¿Por qué elegirnos?</span>
             <h2 className={styles.centerTitle}>Adiós a los Beepers, <br/> hola a la eficiencia.</h2>
 
-            {/* Comparativa Directa */}
             <div className={styles.comparisonGrid}>
             <div className={styles.comparisonCard}>
                 <div className={styles.cardHeaderRed}>Beepers Convencionales</div>
@@ -180,7 +256,6 @@ const Home = () => {
             </div>
             </div>
 
-            {/* Grid de beneficios extra */}
             <div className={styles.extraBenefits}>
             <div className={styles.benefitItem}>
                 <div className={styles.iconBox}><Smartphone size={24}/></div>
@@ -199,10 +274,10 @@ const Home = () => {
             </div>
             </div>
         </div>
-        </section>
+      </section>
 
-        {/* CONTACTO */}
-        <section id="contacto" className={styles.contactoSection}>
+      {/* CONTACTO */}
+      <section id="contacto" className={styles.contactoSection}>
         <div className={styles.darkOverlay}></div>
         <div className={styles.container}>
             <div className={styles.contactoGrid}>
@@ -213,31 +288,58 @@ const Home = () => {
                 <p className={styles.grayText}>Escribinos y transformá la experiencia de tus clientes hoy mismo.</p>
                 
                 <div className={styles.contactLinks}>
-                <a href="#" className={styles.contactItem}>
+                {/* WHATSAPP: Ahora abre el chat directo */}
+                <a 
+                    href="https://wa.me/5491151460922" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.contactItem}
+                >
                     <div className={`${styles.iconCircle} ${styles.wa}`}><MessageCircle size={24} /></div>
-                    <div><span>WhatsApp</span><strong>+54 9 11 1234 5678</strong></div>
+                    <div><span>WhatsApp</span><strong>+54 9 11 5146 0922</strong></div>
                 </a>
-                <a href="#" className={styles.contactItem}>
+
+                {/* INSTAGRAM: Ahora lleva a tu perfil */}
+                <a 
+                    href="https://instagram.com/nottypers" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.contactItem}
+                >
                     <div className={`${styles.iconCircle} ${styles.ig}`}><Instagram size={24} /></div>
                     <div><span>Instagram</span><strong>@nottypers</strong></div>
                 </a>
-                <a href="#" className={styles.contactItem}>
+
+                <a href="#" onClick={handleEmailClick} className={styles.contactItem}>
                     <div className={`${styles.iconCircle} ${styles.mail}`}><Mail size={24} /></div>
-                    <div><span>Email</span><strong>hola@nottypers.com</strong></div>
+                    <div>
+                    <span>Email</span>
+                    <strong>nottypers@gmail.com</strong>
+                    </div>
                 </a>
                 </div>
             </div>
 
             <div className={styles.formContainer}>
                 <div className={styles.formCardDark}>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className={styles.inputGroupDark}>
-                    <label>Nombre del local</label>
-                    <input type="text" placeholder="Ej: Pizza House" />
+                    <label>Nombre del local o Persona</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ej: Pizza House" 
+                      value={formData.nombre}
+                      onChange={(e) => setFormData({...formData, nombre: e.target.value})}
+                    />
                     </div>
                     <div className={styles.inputGroupDark}>
                     <label>Tu mensaje</label>
-                    <textarea placeholder="¿En qué podemos ayudarte?" rows="3"></textarea>
+                    <textarea 
+                      placeholder="¿En qué podemos ayudarte?" 
+                      rows="3"
+                      value={formData.mensaje}
+                      onChange={(e) => setFormData({...formData, mensaje: e.target.value})}
+                    ></textarea>
                     </div>
                     <button type="submit" className={styles.neonBtn}>
                     Enviar mensaje <ArrowRight size={20} />
@@ -248,7 +350,7 @@ const Home = () => {
 
             </div>
         </div>
-        </section>
+      </section>
     </div>
   );
 };
