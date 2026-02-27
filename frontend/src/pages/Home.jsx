@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 import { 
   QrCode, Smartphone, Bell, CheckCircle, 
-  Instagram, Mail, MessageCircle, ArrowRight 
+  Instagram, Mail, MessageCircle, ArrowRight, ShoppingBag, Store, PlusCircle, ListChecks, CreditCard 
 } from 'lucide-react';
 import styles from './Home.module.scss';
 
@@ -99,6 +99,8 @@ const Home = () => {
             <a href="#nosotros">Nosotros</a>
             <a href="#funcionamiento">Cómo funciona</a>
             <a href="#beneficios">Beneficios</a>
+            <a href="#gestor">Gestor de Pedidos</a>
+            <a href="#takeaway">Take Away</a>
             <a href="#contacto">Contacto</a>
           </div>
         </div>
@@ -274,6 +276,176 @@ const Home = () => {
             </div>
             </div>
         </div>
+      </section>
+
+      <section id="gestor" className={styles.gestorSection}>
+        <div className={styles.container}>
+          <div className={styles.gestorGrid}>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className={styles.gestorContent}
+            >
+              <span className={styles.badgeAlt}>Gestor de Pedidos</span>
+              <h2>Tu negocio, <br/> <span className={styles.greenText}>tus reglas.</span></h2>
+              <p>
+                Nuestro gestor no es solo una lista de pedidos. Es una herramienta potente donde vos tenés el control absoluto de lo que vendés.
+              </p>
+              
+              <div className={styles.featureItem}>
+                <div className={styles.miniIcon}><PlusCircle size={20}/></div>
+                <div>
+                  <h4>Carga Dinámica</h4>
+                  <p>Subí tus productos, poné precios y fotos en segundos. Editá o borrá según tu stock diario.</p>
+                </div>
+              </div>
+
+              <div className={styles.featureItem}>
+                <div className={styles.miniIcon}><ListChecks size={20}/></div>
+                <div>
+                  <h4>Panel de Control</h4>
+                  <p>Recibí las órdenes organizadas. Sabé qué pidió cada cliente y el estado de su pago al instante.</p>
+                </div>
+              </div>
+
+              <div className={styles.featureItem}>
+                <div className={styles.miniIcon}><CreditCard size={20}/></div>
+                <div>
+                  <h4>Gestion de Pago Controlado</h4>
+                  <p>Tus clientes arman su carrito y pagan con una experiencia fluida, rápida y profesional.</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className={styles.gestorVisual}
+            >
+              {/* Mockup del Dashboard de Administración */}
+              <div className={styles.adminDashboard}>
+                <div className={styles.dashHeader}>
+                  <div className={styles.dashDots}><span></span><span></span><span></span></div>
+                  <span>nottypers.admin/local</span>
+                </div>
+                <div className={styles.dashBody}>
+                  <div className={styles.dashSidebar}></div>
+                  <div className={styles.dashMain}>
+                      <div className={styles.dashCard}>
+                        <div className={styles.skeletonTitle}></div>
+                        <div className={styles.skeletonRow}></div>
+                        <div className={styles.skeletonRow}></div>
+                      </div>
+                      <div className={styles.productBadge}>
+                        <ShoppingBag size={14} /> +1 Nueva Orden
+                      </div>
+                  </div>
+                </div>
+              </div>
+              {/* Mockup del Celular del Cliente solapado */}
+              <div className={styles.floatingPhone}>
+                <div className={styles.phoneScreenMini}>
+                    <div className={styles.cartHeader}>Tu Pedido</div>
+                    <div className={styles.cartItem}>🍔 Burger VIP... $8500</div>
+                    <div className={styles.payBtn}>Pagar Orden</div>
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* TAKE AWAY */}
+      <section id="takeaway" className={styles.takeawaySection}>
+        <div className={styles.container}>
+            <div className={styles.takeawayHeader}>
+              <span className={styles.badge}>Nueva Funcionalidad</span>
+              <h2 className={styles.mainTitle}>
+                Gestión de Take Away <br /> 
+                <span className={styles.gradientText}>100% Integrada</span>
+              </h2>
+              <p className={styles.description}>
+                Llevamos tu local al siguiente nivel. Tus clientes piden online <br className={styles.hideMobile} /> 
+                y vos recibís todo <strong>ordenado en tu pantalla</strong>.
+              </p>
+            </div>            
+
+            <div className={styles.takeawayGrid}>
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className={styles.takeawayCard}
+              >
+                <div className={styles.iconWrapper}><ShoppingBag size={32}/></div>
+                <h3>1. El cliente pide</h3>
+                <p>Ingresa a tu menú digital personalizado, elige sus productos y finaliza su pedido directamente desde su celular.</p>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className={styles.takeawayCard}
+              >
+                <div className={styles.iconWrapper}><Store size={32}/></div>
+                <h3>2. Recibís la orden</h3>
+                <p>El pedido aparece al instante en la app de tu local, con el nombre del cliente y el detalle exacto de la compra.</p>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className={styles.takeawayCard}
+              >
+                <div className={styles.iconWrapper}><MessageCircle size={32}/></div>
+                <h3>3. Conectás por WhatsApp</h3>
+                <p>Al tocar "Listo para retirar" en tu panel de pedidos, al cliente se le avisa automáticamente a su WhatsApp que puede retirar su pedido.</p>
+              </motion.div>
+            </div>
+        </div>
+
+        {/* NUEVA SUBSECCIÓN: EL DIFERENCIAL */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className={styles.ecosystemHighlight}
+            >
+              <div className={styles.highlightContent}>
+                <div className={styles.textSide}>
+                  <span className={styles.miniBadge}>Ecosistema 360°</span>
+                  <h3>Tecnología propia, resultados profesionales</h3>
+                  <p>
+                    A diferencia de otras soluciones genéricas, nosotros <strong>desarrollamos tanto la app del cliente como tu panel de gestión</strong>. 
+                    Esto nos permite ofrecerte una interfaz más rápida, intuitiva y estéticamente superior a la competencia.
+                  </p>
+                  <ul className={styles.featureList}>
+                    <li>✨ <strong>Diseño Premium:</strong> Una experiencia de compra que enamora a tus clientes.</li>
+                    <li>🚀 <strong>Máxima Eficiencia:</strong> Administrá pedidos y marcá "Listo para retirar" en un toque.</li>
+                    <li>💳 <strong>Pagos Integrados:</strong> Tus clientes pagan por la app y vos gestionás todo desde un solo lugar.</li>
+                    <li>💰 <strong>Precio Justo:</strong> Calidad de software de primer nivel a un costo pensado para locales en crecimiento.</li>
+                  </ul>
+                </div>
+                <div className={styles.visualSide}>
+                  <div className={styles.priceTag}>
+                    <span>El mejor precio del mercado</span>
+                  </div>
+                  {/* Aquí podrías poner una imagen pequeña de las dos apps juntas */}
+                  <div className={styles.appPreviewMockup}>
+                    <div className={styles.phoneOne}></div>
+                    <div className={styles.phoneTwo}></div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
       </section>
 
       {/* CONTACTO */}
